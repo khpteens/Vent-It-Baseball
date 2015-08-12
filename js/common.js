@@ -15,7 +15,7 @@ var settings = {
 	"ANALYTICS_ON": false,
 
 	"SOUND_ON": true,
-	"VOLUME": 0.2,
+	"VOLUME": 1,
 
 	"FULLSCREEN": false,
 
@@ -33,7 +33,7 @@ if (settings.RATIO <= settings.RATIO_MIN) {
 settings.HEIGHT = settings.RATIO * settings.WIDTH;
 
 var copyright_txt = "© BroTalk",
-	release_txt = "Release.Candidate.Aug.12.2015";
+	release_txt = "Candidate.Aug.12.2015";
 
 
 // FUNCTIONS ***********************************************
@@ -82,6 +82,9 @@ function createBt(button, label_text, target_state, shape, iconImage) {
 	if (shape == "circle") {
 		button.height = button.h = 60;
 		button.width = button.w = 60;
+	}else if(shape == "square-small"){
+		button.height = button.h = 30;
+		button.width = button.w = 30;
 	} else {
 		button.height = button.h = 60;
 		button.width = button.w = 350;
@@ -104,8 +107,9 @@ function createBt(button, label_text, target_state, shape, iconImage) {
 		border.drawRect(button.x - button.width / 2, button.y - button.height / 2, button.width, button.height);
 	}
 	border.boundsPadding = 0;
-	button.border = border;
+	button.border = border;	
 	border.alpha = 1;
+	if(shape == "square-small") border.alpha = 0;	
 
 	// add label
 	var label;
@@ -114,8 +118,13 @@ function createBt(button, label_text, target_state, shape, iconImage) {
 		label.lineSpacing = -5;
 	}else{
 		label = Vent.game.add.sprite(button.x, button.y, label_text);
-		label.width = 25;
-		label.height = 25;
+
+		var labelSize = 25;
+		if(shape == "square-small"){
+			labelSize = 18;
+		}
+		label.width = labelSize;
+		label.height = labelSize;
 	}
 	label.anchor.set(0.5);
 	button.label = label; //  save reference to letter
@@ -164,17 +173,46 @@ function createBt(button, label_text, target_state, shape, iconImage) {
 	button.events.onInputUp.add(function() {		
 		button.tint = 0xffffff;		
 	});	
+
+	// to address all button elements use group 
+	btGroup = Vent.game.add.group();	
+
+	btGroup.add(button);
+	btGroup.add(border);
+	btGroup.add(label);
+	// if (iconImage) btGroup.add(icon);
+
+	button.group = btGroup; // save a reference for later usage
 }
 
 function createCopyright() {
 
 	// add copyright text	
-	var c = Vent.game.add.text(Vent.game.width - 10, Vent.game.height, copyright_txt, copyright_style);
+	var c = Vent.game.add.text(Vent.game.width - 65, Vent.game.height-3, copyright_txt, copyright_style);
 	c.anchor.set(1, 1);
 
 	// release	
-	var release = Vent.game.add.text(10, Vent.game.height, release_txt, copyright_style);
+	var release = Vent.game.add.text(10, Vent.game.height-3, release_txt, copyright_style);
 	release.anchor.set(0, 1);
+
+	createSoundScreenToggles();	
+}
+
+function createSoundScreenToggles(){
+
+	// soundBt
+	var soundBt = Vent.game.add.sprite(Vent.game.width - 45, Vent.game.height - 15, "square");
+	createBt(soundBt, "icon-note", false, "square-small");	
+	soundBt.events.onInputUp.add(function() {
+		soundToggle();
+	});
+
+	// fullscreenBt
+	var fullscreenBt = Vent.game.add.sprite(Vent.game.width - 15, Vent.game.height - 15, "square");
+	createBt(fullscreenBt, "icon-expand", false, "square-small");	
+	fullscreenBt.events.onInputUp.add(function() {
+		fullscreenToggle();
+	});
 }
 
 function openInNewTab(url) {
@@ -203,12 +241,10 @@ function soundToggle() {
 
 	if (!settings.SOUND_ON) {
 		settings.SOUND_ON = true;
-		settings.VOLUME = 0.2;
-		trace("Sound On");
+		settings.VOLUME = 0.5;
 	} else {
-		settings.SOUND_ON = false,
-			settings.VOLUME = 0;
-		trace("Sound Off");
+		settings.SOUND_ON = false;
+		settings.VOLUME = 0;
 	}
 }
 
