@@ -1,18 +1,9 @@
 // main.js
 
-var deviceW = window.innerWidth,
-	deviceH = window.innerHeight,
-	deviceRatio = deviceH / deviceW;
-
-if(deviceRatio <= 1.2) deviceRatio = 1.2;
-
-var GAME_WIDTH = 500,
-	GAME_HEIGHT = deviceRatio * GAME_WIDTH;
-
 var Vent = Vent || {};
 
 // create game object
-Vent.game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.CANVAS, '');
+Vent.game = new Phaser.Game(settings.WIDTH, settings.HEIGHT, Phaser.CANVAS, settings.CONTAINER);
 
 // create game states
 Vent.game.state.add('Boot', Vent.Boot);

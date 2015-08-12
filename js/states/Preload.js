@@ -69,6 +69,10 @@ Vent.Preload.prototype = {
 		this.load.image('icon-chat', 'assets/img/i/chat.png');
 		this.load.image('icon-baseball', 'assets/img/i/baseball.png');
 		this.load.image('icon-x', 'assets/img/i/x.png');
+		this.load.image('icon-note', 'assets/img/i/note.png');
+		this.load.image('icon-speaker', 'assets/img/i/speaker.png');
+		this.load.image('icon-expand', 'assets/img/i/expand.png');
+		this.load.image('icon-contract', 'assets/img/i/contract.png');
 
 		// Audio        
 		// Firefox doesn't support mp3 files, so use ogg
@@ -106,20 +110,6 @@ Vent.Preload.prototype = {
 
 function createText() {
 	// do nothing
-}
-
-function load_audio_data(obj, path) {
-	var fileName = path.substring(path.lastIndexOf("/") + 1, path.indexOf(".mp3"));
-	var dataPath = path.substring(0, path.lastIndexOf("/") + 1) + "data/" + fileName;
-
-	jQuery.get(dataPath + '_avg.txt', function(data) {
-		save_data(data, obj);
-	});
-}
-
-function save_data(data, obj) {
-
-	audioData[obj] = data.split(",");
 }
 
 function createStyles() {

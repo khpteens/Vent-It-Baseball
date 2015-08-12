@@ -11,9 +11,6 @@ Vent.Game = function() {};
 var COLOUR_WHITE = 0xffffff,
 	COLOUR_BLACK = 0x000000;
 
-var GAME_SOUND_ON = true,
-	GAME_VOLUME = 0.2;
-
 var hitTotal = 0,
 	trail = null, // mouse trail particle emitter
 	trailOn = false,
@@ -117,7 +114,7 @@ Vent.Game.prototype = {
 };
 
 function createWorldSettings() {
-	Vent.game.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
+	Vent.game.world.setBounds(0, 0, settings.WIDTH, settings.HEIGHT);
 	Vent.game.stage.backgroundColor = 0x222222;
 }
 
@@ -392,77 +389,6 @@ function createVisualization() {
 	sw2.height = 0;
 	sw2.anchor.set(0.5);
 	sw2.rotation = 45;
-}
-
-function playAudio(mysound) {
-
-	if (GAME_SOUND_ON && GAME_VOLUME > 0) {
-		var rand = Math.random() * 0.25;
-		mysound.volume = GAME_VOLUME + rand;
-		mysound.play();
-		mysound.frame = 0;
-
-		playing.push(mysound);
-	}
-}
-
-function analyseAudio() {
-
-	if (volumes.length <= audioLength) {
-
-		// update data in frequencyData
-		Vent.game.analyser.getByteFrequencyData(Vent.game.frequencyData);
-
-		// render frame based on values in frequencyData            
-		getAverageVolume(Vent.game.frequencyData);
-
-		if (volumes.length == audioLength) {
-			save_audio_data();
-		}
-	}
-}
-
-function getAverageVolume(array) {
-
-	var values = 0;
-	var average;
-
-	var length = array.length;
-
-	// get all the frequency amplitudes
-	for (var i = 0; i < length; i++) {
-		values += array[i];
-	}
-
-	average = values / length;
-
-	volumes.push(Number(values));
-	averages.push(Number(average.toFixed(2)));
-	if (average != 0) {
-		all.push(JSON.stringify(array));
-	} else {
-		all.push("0");
-	}
-
-	// return values;
-}
-
-function save_audio_data() {
-
-	var jqxhr = $.ajax({
-			type: "post",
-			url: "save.php",
-			data: "fileName=" + audioFileName + "&averages=" + averages + "&volumes=" + volumes + "&all=" + all
-		})
-		.done(function() {
-			trace("success");
-		})
-		.fail(function() {
-			trace("error");
-		})
-		.always(function() {
-			trace("complete");
-		});
 }
 
 function gameExit(delay) {
