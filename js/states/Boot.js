@@ -36,7 +36,8 @@ Vent.Boot.prototype = {
 		this.scale.setScreenSize(true);
 
 		// enable to allow framerate testing
-		this.time.advancedTiming = true;		
+		this.time.advancedTiming = true;	
+			
 
 		// Screen Transitions
 		// load transition plugin. Source is here https://github.com/aaccurso/phaser-state-transition-plugin
