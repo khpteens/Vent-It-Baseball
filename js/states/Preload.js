@@ -137,6 +137,11 @@ function createStyles() {
 		fill: "#4ac7eb",
 		align: "center"
 	};
+	h3_style_bold = {
+		font: "700 25px Open Sans",
+		fill: white,
+		align: "center"
+	};
 	p_style = {
 		font: "300 20px Open Sans",
 		fill: white

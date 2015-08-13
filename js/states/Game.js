@@ -86,15 +86,7 @@ Vent.Game.prototype = {
 		createUI();
 
 		// Continue prompt
-		var text = "1. Click to pitch.\n2. Then click on the ball to hit.";
-		if (hasTouch) text = "1. Tap to pitch.\n2. Then tap on the ball to hit.";
-		var prompt = this.game.add.text(this.game.width / 2, this.game.height / 5 * 4, text, h3_style);
-		prompt.anchor.set(0.5);
-		setTimeout(function() {
-			Vent.game.add.tween(prompt).to({
-				alpha: 0
-			}, 1500, "Linear", true);
-		}, 4000);
+		create_instructions_prompt();		
 
 	},
 	update: function() {
@@ -112,6 +104,44 @@ Vent.Game.prototype = {
 		// this.game.debug.text(this.game.time.fps || '--', 2, 14, "#00ff00");
 	}
 };
+
+function create_instructions_prompt() {
+
+	var prompt = Vent.game.add.group();
+
+	var clickblock = Vent.game.add.graphics(0,0);
+	clickblock.inputEnabled = true;
+	clickblock.beginFill(0x000000, 1);
+	clickblock.boundsPadding = 0;
+	clickblock.drawRect(0, 0, Vent.game.width, Vent.game.height - 30);
+	clickblock.alpha = 0;
+	prompt.add(clickblock);
+
+	var overlay = Vent.game.add.graphics(0, 0);	
+	overlay.beginFill(0x000000, 1);
+	overlay.boundsPadding = 0;
+	overlay.drawRect(0, Vent.game.height / 2-100, Vent.game.width, 200);
+	overlay.alpha = 0.5;	
+	prompt.add(overlay);
+
+	// Instructions
+	text = "1. Click to pitch.\n2. Then click on the ball to hit it.";
+	if (hasTouch) text = "1. Tap to pitch.\n2. Then tap on the ball to hit it.";
+	winText = Vent.game.add.text(settings.WIDTH / 2, settings.HEIGHT / 2 - 40, text, p_style);
+	winText.anchor.set(0.5);
+	prompt.add(winText);
+
+	// Continue button
+	ContinueBt = Vent.game.add.sprite(settings.WIDTH / 2, settings.HEIGHT / 2 + 45, 'square');
+	createBt(ContinueBt, "Continue", false);
+	ContinueBt.events.onInputUp.add(function() {
+		prompt.visible = false;
+		
+	}, this);
+	prompt.add(ContinueBt.group);
+
+	prompt.bringToTop = true;
+}
 
 function createWorldSettings() {
 	Vent.game.world.setBounds(0, 0, settings.WIDTH, settings.HEIGHT);
@@ -420,7 +450,11 @@ function gameExit(delay) {
 		// sb.height = Vent.game.height * 2;
 
 		// go to Finish screen
-		Vent.game.stateTransition.to("Finish");
+		if (!hasTouch) {
+			Vent.game.stateTransition.to("Finish");
+		} else {
+			Vent.game.state.start("Finish");
+		}
 
 	}, delay);
 }

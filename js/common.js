@@ -141,7 +141,13 @@ function createBt(button, label_text, target_state, shape, iconImage) {
 
 	if (target_state != false && target_state != undefined) {
 		button.events.onInputUp.add(function() {
-			Vent.game.stateTransition.to(target_state);
+
+			if (!hasTouch) {
+				Vent.game.stateTransition.to(target_state);
+			} else {
+				Vent.game.state.start(target_state);
+			}
+			
 		}, this);
 	}
 	button.events.onInputOver.add(function() {
