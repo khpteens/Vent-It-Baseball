@@ -28,12 +28,6 @@ var hits = [],
 	stopPlaying = [],
 	bars = [];
 
-var swipeCoordX,
-	swipeCoordY,
-	swipeCoordX2,
-	swipeCoordY2,
-	swipeMinDistance = 100;
-
 var graphics = null;
 
 var bgGame,
@@ -59,21 +53,13 @@ Vent.Game.prototype = {
 		createWorldSettings();
 
 		bg_group = Vent.game.add.group();
-
 		bgGame = Vent.game.add.sprite(0, 0, "field");
 		bgGame.width = Vent.game.world.width;
 		bgGame.height = Vent.game.world.height;
 		bgGame.inputEnabled = true;
 		bg_group.add(bgGame);
 
-		pitcher = Vent.game.add.sprite(Vent.game.world.width / 2 - 17, Vent.game.world.height / 2 + 14, "pitcher");
-		pitcher.animations.add('pitch');
-		pitcher.anchor.set(0.5);
-		pitcher.scale.set(0.5);
-		pitcher.tint = 0x111111;
-		pitcher.alpha = 1;
-
-		// createBG(0x777777, bgGame);
+		create_pitcher();
 
 		init_pop();
 		create_particle_layer();
@@ -81,35 +67,38 @@ Vent.Game.prototype = {
 
 		createAudio();
 		setup_game();
-		// createVisualization();
 
 		createUI();
 
-		// Continue prompt
-		create_instructions_prompt();		
-
+		create_instructions_prompt();
 	},
 	update: function() {
 
-		// updateTrail();
-		// updateHits();
-		// updateVisualization();
 		updateUI();
-
 		pitch_update();
-
+		hit_update();
 	},
 	render: function() {
-
 		// this.game.debug.text(this.game.time.fps || '--', 2, 14, "#00ff00");
 	}
 };
+
+function create_pitcher() {
+
+	// add pitcher
+	pitcher = Vent.game.add.sprite(Vent.game.world.width / 2 - 17, Vent.game.world.height / 2 + 14, "pitcher");
+	pitcher.animations.add('pitch');
+	pitcher.anchor.set(0.5);
+	pitcher.scale.set(0.5);
+	pitcher.tint = 0x111111;
+	pitcher.alpha = 1;
+}
 
 function create_instructions_prompt() {
 
 	var prompt = Vent.game.add.group();
 
-	var clickblock = Vent.game.add.graphics(0,0);
+	var clickblock = Vent.game.add.graphics(0, 0);
 	clickblock.inputEnabled = true;
 	clickblock.beginFill(0x000000, 1);
 	clickblock.boundsPadding = 0;
@@ -117,11 +106,11 @@ function create_instructions_prompt() {
 	clickblock.alpha = 0;
 	prompt.add(clickblock);
 
-	var overlay = Vent.game.add.graphics(0, 0);	
+	var overlay = Vent.game.add.graphics(0, 0);
 	overlay.beginFill(0x000000, 1);
 	overlay.boundsPadding = 0;
-	overlay.drawRect(0, Vent.game.height / 2-100, Vent.game.width, 200);
-	overlay.alpha = 0.5;	
+	overlay.drawRect(0, Vent.game.height / 2 - 100, Vent.game.width, 200);
+	overlay.alpha = 0.5;
 	prompt.add(overlay);
 
 	// Instructions
@@ -136,7 +125,7 @@ function create_instructions_prompt() {
 	createBt(ContinueBt, "Continue", false);
 	ContinueBt.events.onInputUp.add(function() {
 		prompt.visible = false;
-		
+
 	}, this);
 	prompt.add(ContinueBt.group);
 
@@ -248,9 +237,14 @@ function pitch_update() {
 			ball.alpha = 0;
 			ball.x = ball.y = 0;
 			mode = "pitch";
-			pitcher.frame = 0;
-			// pitcher.animations.stop('pitch');		
+			pitcher.frame = 0;				
 		}
+	}
+}
+
+function hit_update(){
+	if (mode == "hit"){
+
 	}
 }
 
@@ -462,6 +456,7 @@ function gameExit(delay) {
 function create_particle_layer() {
 
 	particles = Vent.game.add.group(); // create a group to contain all particles
+	ball_group = Vent.game.add.group();
 }
 
 function createHit() {
@@ -483,9 +478,10 @@ function createHit() {
 
 	createSmoke(x, y);
 	createSplinters(x, y);
-	createBall(ball.x, ball.y);	
+	createBall(ball.x, ball.y);
+	// createBall_2(ball.x, ball.y);
 
-	if (!hasTouch) create_bg_pop();	
+	if (!hasTouch) create_bg_pop();
 
 	if (hitTotal >= hitGoal) {
 		gameExit(3500);
@@ -557,19 +553,6 @@ function createBall(x, y) {
 	// ALPHA
 	em.setAlpha(1, 1, 3000); // start alpha, end alpha, animation duration, will always fade out as lifespan ends
 
-	/* TOWARDS USER 
-	// SCALE
-	em.setScale(0, 2, 0, 2, 3000); // (x start, x end, y start, y end, animation duration, Type of ease)    
-
-	em.minParticleSpeed.setTo(-500, -800); // x speed, y speed
-	em.maxParticleSpeed.setTo(500, 100); // x speed, y speed
-
-	em.setRotation(0, 180, 3000); // (start rotation, end rotation, duration, ease) default is (0, 360)
-
-	em.gravity = 400; // default is 0;
-	*/
-
-
 	/* AWAY FROM USER */
 
 	// SCALE
@@ -595,11 +578,20 @@ function createBall(x, y) {
 	hits.push(em);
 }
 
+function createBall_2(x, y) {
+
+	var ball = Vent.game.add.sprite(x, y, "ball");
+	ball.anchor.set(0.5);
+	ball.scale.set(0.1);
+
+	ball_group.add(ball);
+}
+
 function createSmoke(x, y) {
 
 	var amount = 1;
 	var smokeDuration = 2000;
-	if (!hasTouch){
+	if (!hasTouch) {
 		amount = 4;
 		smokeDuration = 3000;
 	}
