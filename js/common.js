@@ -7,8 +7,9 @@
 var settings = {
 	"WIDTH": 500,
 	"HEIGHT": undefined,
-	"RATIO": window.innerHeight / window.innerWidth,
-	"RATIO_MIN": 1.2,
+	"RATIO": window.outerHeight / window.outerWidth,
+	"RATIO_MIN": 1.1,
+	"RATIO_MAX": 1.6,
 
 	"PAUSED": false,
 
@@ -27,13 +28,15 @@ var settings = {
 };
 
 if (settings.RATIO <= settings.RATIO_MIN) {
-	settings.RATIO = settings.RATIO_MIN; // widest is square, no limit to height
+	settings.RATIO = settings.RATIO_MIN; // shortest is 550px
+}else if(settings.RATIO > settings.RATIO_MAX){
+	settings.RATIO = settings.RATIO_MAX; // tallest is 800px, 
 }
 
 settings.HEIGHT = settings.RATIO * settings.WIDTH;
 
 var copyright_txt = "© BroTalk",
-	release_txt = "RC.Aug.12.2015";
+	release_txt = "RC.Aug.31.2015";
 
 
 // FUNCTIONS ***********************************************
