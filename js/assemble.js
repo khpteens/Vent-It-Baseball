@@ -14,7 +14,7 @@ $LAB
 	.script("js/states/Preload.js")
 	.script("js/states/MainMenu.js")
 	.script("js/states/Pick.js")
-	.script("js/states/Game.js")
+	.script("js/states/Game.min.js")
 	.script("js/states/Finish.js")
 	.script("js/states/Success.js")
 	.script("js/states/Contact.js")

@@ -41,6 +41,8 @@ settings.HEIGHT = settings.RATIO * settings.WIDTH;
 var copyright_txt = "© BroTalk",
 	release_txt = "Release Candidate | Sept.1.2015";
 
+trace(settings.NAME + " | " + release_txt);
+
 
 // FUNCTIONS ***********************************************
 
@@ -200,13 +202,12 @@ function createBt(button, label_text, target_state, shape, iconImage) {
 function createCopyright() {
 
 	// add copyright text	
-	var c = Vent.game.add.text(Vent.game.width - 65, Vent.game.height-3, copyright_txt, copyright_style);
-	c.anchor.set(1, 1);
+	var c = Vent.game.add.text(10, Vent.game.height-3, copyright_txt, copyright_style);
+	c.anchor.set(0, 1);
 
 	// release	
 	// var release = Vent.game.add.text(10, Vent.game.height-3, release_txt, copyright_style);
-	// release.anchor.set(0, 1);
-	trace(settings.NAME + " | " + release_txt)
+	// release.anchor.set(0, 1);	
 
 	createSoundScreenToggles();	
 }
