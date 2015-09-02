@@ -16,7 +16,7 @@ var settings = {
 	"PAUSED": false,
 
 	"GA_CODE": "UA-66839321-1",
-	"ANALYTICS_ON": false,
+	"ANALYTICS_ON": true,
 
 	"SOUND_ON": true,
 	"VOLUME": 1,

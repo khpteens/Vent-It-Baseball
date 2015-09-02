@@ -19,6 +19,9 @@ Vent.Finish.prototype = {
 		// bt "Yeah, thanks"
 		var YesBt = this.game.add.sprite(this.game.width / 2, this.game.height / 2-70, "square");
 		createBt(YesBt, "Yeah, thanks", "Success", false, "emoji4");
+		YesBt.events.onInputUp.add(function(){
+			trackEvent("Yes Thanks clicked", Vent.game.state.getCurrentState().key+" screen");
+		}, this);
 
 		// bt "A little, play again"
 		var aLittleBt = this.game.add.sprite(this.game.width / 2, this.game.height / 2 - 10, "square");
@@ -31,6 +34,7 @@ Vent.Finish.prototype = {
 		var somethingElseBt = this.game.add.sprite(this.game.width / 2, this.game.height / 2 + 50, "square");
 		createBt(somethingElseBt, "No, I need something else", false, false, "emoji3");
 		somethingElseBt.events.onInputUp.add(function() {
+			trackEvent("No clicked", Vent.game.state.getCurrentState().key+" screen");
 			goToHomepage();
 		}, this);
 
