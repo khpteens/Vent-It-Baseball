@@ -42,6 +42,8 @@ Vent.Preload.prototype = {
 
 		// animations
 		this.load.spritesheet('pitcher', 'assets/img/pitcher.png', 131, 150, 14);
+		this.load.spritesheet('icon-sound', 'assets/img/i/soundOnOff.png', 60, 60);
+		this.load.spritesheet('icon-fullscreen', 'assets/img/i/expand-contract.png', 60, 60);
 
 		// sprites			
 		// particles
