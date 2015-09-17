@@ -39,7 +39,7 @@ if (settings.RATIO <= settings.RATIO_MIN) {
 settings.HEIGHT = settings.RATIO * settings.WIDTH;
 
 var copyright_txt = "© BroTalk",
-	release_txt = "Release Candidate | Sept.1.2015",
+	release_txt = "Gold release | Oct.8.2015",
 	soundBt, fullscreenBt;
 
 trace(settings.NAME + " | " + release_txt);
